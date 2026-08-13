@@ -15,6 +15,62 @@
         "product_3": ""
       }
     },
+    "purelane_reviews": {
+      "type": "purelane-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "title": "Works like a charm",
+            "content": "Finally an eco option that cleans as well as the chemical detergent I used for years, and it smells better.",
+            "reviewer_name": "Anita",
+            "product_name": "Laundry detergent"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "title": "Best dishwash ever",
+            "content": "Our old dishwash left my help with dry, cracked skin. That stopped completely after we switched.",
+            "reviewer_name": "Priya",
+            "product_name": "Dishwash gel"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "title": "Great product, great packaging",
+            "content": "Very soft on hands with a lovely fragrance, and it feels good to be using far less plastic.",
+            "reviewer_name": "Sunita",
+            "product_name": "Liquid handwash"
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "stars": "★★★★★",
+            "title": "Dog friendly",
+            "content": "We switched because chemical floor cleaners were setting off my dog's allergies. No reactions since.",
+            "reviewer_name": "Rohit S.",
+            "product_name": "Floor cleaner"
+          }
+        }
+      },
+      "block_order": [
+        "review1",
+        "review2",
+        "review3",
+        "review4"
+      ],
+      "settings": {
+        "kicker": "That's what they said",
+        "rating_text": "4.8 from 8,000+ reviews",
+        "subtitle": "Loved by 12 lakh+ homes"
+      }
+    },
     "purelane_shop": {
       "type": "purelane-shop",
       "settings": {
@@ -137,6 +193,7 @@
   },
   "order": [
     "purelane_hero",
+    "purelane_reviews",
     "purelane_shop",
     "purelane_combos",
     "purelane_bundles"
