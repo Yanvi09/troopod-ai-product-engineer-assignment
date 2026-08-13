@@ -75,8 +75,6 @@
   Displays hero with product carousel and pricing
 {% endcomment %}
 
-
-
 <section class="purelane-hero" id="purelane-hero-{{ section.id }}" data-section-id="{{ section.id }}">
   <div class="hero-grid">
     
@@ -135,7 +133,7 @@
       
       <div class="hero-cta rv rv-d3">
         {% if section.settings.cta_text != blank %}
-          <a class="btn btn-primary" href="{{ section.settings.cta_link }}">
+          <a class="btn btn-primary" href="{% if section.settings.cta_link != blank %}{{ section.settings.cta_link }}{% else %}#shop{% endif %}">
             {{ section.settings.cta_text }}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h13m-5-6 6 6-6 6"/>
@@ -144,7 +142,7 @@
         {% endif %}
         
         {% if section.settings.secondary_cta_text != blank %}
-          <a class="btn btn-ghost" href="{{ section.settings.secondary_cta_link }}">
+          <a class="btn btn-ghost" href="{% if section.settings.secondary_cta_link != blank %}{{ section.settings.secondary_cta_link }}{% else %}#how{% endif %}">
             {{ section.settings.secondary_cta_text }}
           </a>
         {% endif %}
@@ -283,3 +281,50 @@
   </div>
 </section>
 
+<script>
+  // Initialize hero functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const heroSection = document.querySelector('.purelane-hero');
+    if (!heroSection) return;
+
+    const stage = heroSection.querySelector('.hstage');
+    const slides = heroSection.querySelectorAll('.hslide');
+    const dots = heroSection.querySelectorAll('.hdots button');
+    const productId = heroSection.id;
+
+    if (!stage || slides.length === 0) return;
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('on');
+        if (i === index) {
+          slide.classList.add('on');
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.remove('on');
+        if (i === index) {
+          dot.classList.add('on');
+        }
+      });
+
+      currentSlide = index;
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        showSlide(index);
+      });
+    });
+
+    // Auto-rotate slides
+    setInterval(() => {
+      const nextSlide = (currentSlide + 1) % totalSlides;
+      showSlide(nextSlide);
+    }, 5000);
+  });
+</script>
