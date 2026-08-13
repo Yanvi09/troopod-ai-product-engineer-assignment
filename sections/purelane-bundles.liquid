@@ -1,0 +1,556 @@
+{% schema %}
+{
+  "name": "Purelane Bundles",
+  "tag": "section",
+  "class": "purelane-bundles-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "One box. Every room."
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Build your bundle"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Pricing Tier",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "Starter"
+        },
+        {
+          "type": "number",
+          "id": "product_count",
+          "label": "Number of Products",
+          "default": 2
+        },
+        {
+          "type": "number",
+          "id": "price",
+          "label": "Price",
+          "default": 349
+        },
+        {
+          "type": "number",
+          "id": "compare_price",
+          "label": "Compare Price",
+          "default": 598
+        },
+        {
+          "type": "text",
+          "id": "per_product_text",
+          "label": "Per Product Text",
+          "default": "Flat ₹174 per product"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features (one per line)",
+          "default": "Pick any two products\nFree shipping across India"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "Build this box"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link",
+          "default": "#shop"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Bundles",
+      "blocks": [
+        {
+          "type": "tier",
+          "settings": {
+            "tag": "Starter",
+            "product_count": 2,
+            "price": 349,
+            "compare_price": 598,
+            "per_product_text": "Flat ₹174 per product",
+            "featured": false,
+            "features": "Pick any two products\nFree shipping across India",
+            "cta_text": "Build this box",
+            "cta_link": "#shop"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "tag": "Most popular",
+            "product_count": 3,
+            "price": 499,
+            "compare_price": 897,
+            "per_product_text": "Flat ₹166 per product",
+            "featured": true,
+            "features": "Pick any three products\nCovers kitchen and laundry\nFree shipping across India",
+            "cta_text": "Build this box",
+            "cta_link": "#shop"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "tag": "Whole home",
+            "product_count": 5,
+            "price": 799,
+            "compare_price": 1495,
+            "per_product_text": "Flat ₹160 per product",
+            "featured": false,
+            "features": "Pick any five products\nEvery room in one order\nFree shipping across India",
+            "cta_text": "Build this box",
+            "cta_link": "#shop"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% comment %}
+  Purelane Bundles Section
+  Tiered pricing options for product bundles
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'purelane.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'purelane.css' | asset_url | stylesheet_tag }}</noscript>
+
+<section class="purelane-bundles sec" data-section-id="{{ section.id }}">
+  <div class="wrap">
+    <div class="glass sec-pad rv" style="margin-bottom:16px">
+      <div class="panel-head" style="margin-bottom:0">
+        {% if section.settings.kicker != blank %}
+          <span class="kicker">{{ section.settings.kicker }}</span>
+        {% endif %}
+        
+        {% if section.settings.heading != blank %}
+          <h2 class="d2" style="margin-top:12px">{{ section.settings.heading }}</h2>
+        {% endif %}
+        
+        {% if section.settings.description != blank %}
+          <p class="lede" style="margin:0 auto">{{ section.settings.description }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="purelane-tiers">
+      {% for block in section.blocks %}
+        <article class="purelane-tier glass rv rv-{{ forloop.index }} {% if block.settings.featured %}purelane-tier-featured{% endif %}" {{ block.shopify_attributes }}>
+          {% if block.settings.tag != blank %}
+            <span class="purelane-tier-tag">{{ block.settings.tag }}</span>
+          {% endif %}
+          
+          <div class="purelane-tier-qty">
+            {{ block.settings.product_count }}
+            <small>{% if block.settings.product_count == 1 %}Product{% else %}Products{% endif %}</small>
+          </div>
+          
+          <div class="purelane-tier-price">
+            ₹{{ block.settings.price }} 
+            {% if block.settings.compare_price > block.settings.price %}
+              <s>₹{{ block.settings.compare_price }}</s>
+            {% endif %}
+          </div>
+          
+          {% if block.settings.per_product_text != blank %}
+            <p class="body-s" style="font-size:12px">{{ block.settings.per_product_text }}</p>
+          {% endif %}
+          
+          {% if block.settings.features != blank %}
+            {% assign feature_list = block.settings.features | split: '\n' %}
+            <ul>
+              {% for feature in feature_list %}
+                {% if feature != blank %}
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m5 13 4 4L19 7"/>
+                    </svg>
+                    {{ feature }}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+          
+          {% if block.settings.cta_text != blank %}
+            {% if block.settings.featured %}
+              <a class="btn btn-primary" href="{{ block.settings.cta_link }}">
+                {{ block.settings.cta_text }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h13m-5-6 6 6-6 6"/>
+                </svg>
+              </a>
+            {% else %}
+              <a class="btn btn-ghost" href="{{ block.settings.cta_link }}">
+                {{ block.settings.cta_text }}
+              </a>
+            {% endif %}
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Initialize reveal animations for bundles section
+  document.addEventListener('DOMContentLoaded', function() {
+    const bundlesSection = document.querySelector('.purelane-bundles');
+    if (!bundlesSection) return;
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = bundlesSection.querySelectorAll('.rv');
+    revealElements.forEach(el => observer.observe(el));
+  });
+</script>
+
+<style>
+  /* Bundles Section Styles */
+  .purelane-bundles-section {
+    --ink: #f4f0fb;
+    --deep: #e2daf3;
+    --brand: #4b3a8f;
+    --brand-lt: #6b55b8;
+    --paper: #241a3d;
+    --paper-2: rgba(36, 26, 61, 0.78);
+    --paper-3: rgba(36, 26, 61, 0.56);
+    --accent: #b8701c;
+    --accent-2: #c9761d;
+    --surface: #17102b;
+    --g-bg: linear-gradient(158deg, rgba(255, 255, 255, 0.80), rgba(236, 230, 247, 0.56) 58%, rgba(222, 212, 240, 0.50));
+    --g-line: rgba(75, 58, 143, 0.16);
+    --g-shadow: 0 22px 54px rgba(58, 44, 112, 0.13);
+    --g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    --r: 26px;
+    --r-sm: 16px;
+    --maxw: 1180px;
+    --sec-y: 34px;
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .purelane-bundles {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  .purelane-bundles .d1, 
+  .purelane-bundles .d2, 
+  .purelane-bundles .d3, 
+  .purelane-bundles .d4 {
+    font-family: 'Outfit', system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.018em;
+    font-weight: 800;
+    line-height: 0.87;
+    color: var(--surface);
+  }
+
+  .purelane-bundles .d2 {
+    font-size: clamp(30px, 4.6vw, 54px);
+    line-height: 0.94;
+  }
+
+  .purelane-bundles .kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-3);
+  }
+
+  .purelane-bundles .lede {
+    font-size: clamp(15px, 1.35vw, 17.5px);
+    color: var(--paper-2);
+    max-width: 44ch;
+  }
+
+  .purelane-bundles .body-s {
+    font-size: 14.5px;
+    color: var(--paper-2);
+    line-height: 1.66;
+  }
+
+  .purelane-bundles .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 18px;
+  }
+
+  .purelane-bundles .sec {
+    position: relative;
+    padding: var(--sec-y) 0;
+  }
+
+  .purelane-bundles .sec-pad {
+    padding: clamp(26px, 3.4vw, 40px);
+  }
+
+  .purelane-bundles .panel-head {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  .purelane-bundles .panel-head .d2 {
+    margin-bottom: 12px;
+  }
+
+  .purelane-bundles .rv {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(7px);
+    transition: opacity 0.95s var(--ease), transform 0.95s var(--ease), filter 0.95s var(--ease);
+  }
+
+  .purelane-bundles .rv.in {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .purelane-bundles .rv-1 {
+    transition-delay: 0.09s;
+  }
+
+  .purelane-bundles .rv-2 {
+    transition-delay: 0.18s;
+  }
+
+  .purelane-bundles .rv-3 {
+    transition-delay: 0.27s;
+  }
+
+  .purelane-bundles .rv-4 {
+    transition-delay: 0.36s;
+  }
+
+  .purelane-tiers {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+
+  @media(min-width: 760px) {
+    .purelane-tiers {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .purelane-tier {
+    padding: 24px 22px;
+    transition: 0.4s var(--ease);
+    border-radius: var(--r);
+    border: 1px solid var(--g-line);
+    background: var(--g-bg);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    box-shadow: var(--g-shadow), var(--g-inset);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .purelane-tier:hover {
+    transform: translateY(-5px);
+  }
+
+  .purelane-tier-featured {
+    border-color: rgba(201, 118, 29, 0.46);
+    box-shadow: 0 22px 54px rgba(58, 44, 112, 0.14), 0 0 0 1px rgba(201, 118, 29, 0.24), var(--g-inset);
+  }
+
+  .purelane-tier-tag {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+    background: rgba(201, 118, 29, 0.14);
+    border: 1px solid rgba(201, 118, 29, 0.34);
+    color: #4f7d10;
+  }
+
+  .purelane-tier-qty {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 52px;
+    line-height: 0.9;
+    color: var(--surface);
+    letter-spacing: -0.03em;
+  }
+
+  .purelane-tier-qty small {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-3);
+    display: block;
+    margin-top: 6px;
+  }
+
+  .purelane-tier-price {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 27px;
+    color: var(--accent);
+    margin: 16px 0 4px;
+  }
+
+  .purelane-tier-price s {
+    font-size: 14px;
+    color: var(--paper-3);
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  .purelane-tier ul {
+    list-style: none;
+    margin: 16px 0 20px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .purelane-tier li {
+    display: flex;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--paper-2);
+  }
+
+  .purelane-tier li svg {
+    width: 14px;
+    height: 14px;
+    color: var(--accent);
+    flex: 0 0 auto;
+    margin-top: 4px;
+  }
+
+  .purelane-tier .btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: auto;
+  }
+
+  .purelane-bundles .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 46px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    transition: 0.35s var(--ease);
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  .purelane-bundles .btn-primary {
+    background: linear-gradient(135deg, #00706a, #004b46);
+    color: #f4fdf6;
+    box-shadow: 0 12px 26px rgba(0, 80, 74, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  .purelane-bundles .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(0, 80, 74, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .purelane-bundles .btn-ghost {
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid rgba(75, 58, 143, 0.22);
+    color: #01423b;
+  }
+
+  .purelane-bundles .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .purelane-bundles .btn svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+  }
+
+  @media(max-width: 760px) {
+    .purelane-bundles-section {
+      --sec-y: 22px;
+    }
+    .purelane-bundles .sec-pad {
+      padding: 22px 18px;
+    }
+    .purelane-tier-qty {
+      font-size: 44px;
+    }
+  }
+
+  @media(prefers-reduced-motion: reduce) {
+    .purelane-bundles * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .purelane-bundles .rv {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+</style>
