@@ -1,5 +1,5 @@
 development:
-  password: shptka_33295c7183df198e9e927cec486023e5
+  password: ""  # Set your theme access token here
   theme_id: ""
   store: troopod-purelane-ja5pcov.myshopify.com
   ignore_files:
