@@ -78,9 +78,9 @@
     <div class="purelane-shelf">
       {% if section.settings.collection != blank %}
         {% assign collection = collections[section.settings.collection] %}
-        {% assign products = collection.products limit: section.settings.products_to_show %}
+        {% assign products = collection.products | slice: 0, section.settings.products_to_show %}
       {% else %}
-        {% assign products = collections.all.products limit: section.settings.products_to_show %}
+        {% assign products = collections.all.products | slice: 0, section.settings.products_to_show %}
       {% endif %}
 
       {% for product in products %}

@@ -60,10 +60,10 @@
         }
       },
       "block_order": [
-        "review1",
-        "review2",
-        "review3",
-        "review4"
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4"
       ],
       "settings": {
         "kicker": "That's what they said",

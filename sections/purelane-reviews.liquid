@@ -156,7 +156,6 @@
       {% endfor %}
       
       <!-- Duplicate reviews for seamless scrolling -->
-      {% assign offset = section.blocks.size %}
       {% for block in section.blocks %}
         <article class="purelane-rcard glass-2 rv" aria-hidden="true">
           <div class="purelane-rcard-stars">{{ block.settings.stars }}</div>
