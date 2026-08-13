@@ -1,0 +1,63 @@
+{% comment %}
+  Purelane Product Card Snippet
+  Reusable product card for displaying products in grids
+  
+  Parameters:
+  - product: The product object
+  - badge_text: Optional badge text to display
+  - show_rating: Whether to show rating (default: false)
+{% endcomment %}
+
+<div class="purelane-product-card">
+  <div class="purelane-product-card-shot">
+    {% if badge_text != blank %}
+      <span class="purelane-product-card-pill">{{ badge_text }}</span>
+    {% endif %}
+    
+    {% if product.featured_image %}
+      <span class="purelane-product-card-image" 
+            role="img" 
+            aria-label="{{ product.title }}"
+            style="background-image: url('{{ product.featured_image | image_url: width: 400 }}');">
+      </span>
+    {% else %}
+      <span class="purelane-product-card-image purelane-product-card-placeholder" 
+            role="img" 
+            aria-label="{{ product.title }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </span>
+    {% endif %}
+  </div>
+  
+  <h4 class="purelane-product-card-title">{{ product.title }}</h4>
+  
+  {% if show_rating %}
+    <div class="purelane-product-card-rating">
+      <b>★ 4.8</b> · 237 reviews
+    </div>
+  {% endif %}
+  
+  <div class="purelane-product-card-price">
+    <strong>{{ product.price | money }}</strong>
+    {% if product.compare_at_price > product.price %}
+      <s>{{ product.compare_at_price | money }}</s>
+      {% assign savings = product.compare_at_price | minus: product.price %}
+      {% assign savings_percent = savings | times: 100 | divided_by: product.compare_at_price %}
+      <em>{{ savings_percent }}% off</em>
+    {% endif %}
+  </div>
+  
+  <button class="purelane-product-card-button" 
+          {% unless product.available %}disabled{% endunless %}
+          aria-label="{% if product.available %}Add {{ product.title }} to cart{% else %}{{ product.title }} is sold out{% endif %}">
+    {% if product.available %}
+      Add to cart
+    {% else %}
+      Sold out
+    {% endif %}
+  </button>
+</div>
