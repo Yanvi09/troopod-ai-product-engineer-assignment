@@ -24,10 +24,63 @@
         "products_to_show": 8,
         "show_rating": true
       }
+    },
+    "purelane_combos": {
+      "type": "purelane-combos",
+      "blocks": {
+        "combo_1": {
+          "type": "combo",
+          "settings": {
+            "title": "Kitchen essentials",
+            "save_text": "You save ₹398",
+            "flag_text": "Most popular",
+            "product_1": "",
+            "product_1_desc": "Cuts grease instantly",
+            "product_2": "",
+            "product_2_desc": "Squeaky clean dishes",
+            "product_3": "",
+            "product_3_desc": "Melts hard water stains",
+            "includes": "Includes: Foaming Kitchen Cleaner, Dishwash Gel & Tap Cleaner. Everything for a sparkling kitchen, no need to pick separately.",
+            "price": 499,
+            "compare_price": 897,
+            "cta_text": "Shop bundle",
+            "cta_link": "#bundles"
+          }
+        },
+        "combo_2": {
+          "type": "combo",
+          "settings": {
+            "title": "Laundry bundle",
+            "save_text": "You save ₹448",
+            "flag_text": "",
+            "product_1": "",
+            "product_1_desc": "Removes tough stains & odour",
+            "product_2": "",
+            "product_2_desc": "Softens fabric naturally",
+            "product_3": "",
+            "product_3_desc": "",
+            "includes": "Includes: Laundry Detergent & Fabric Conditioner. Clean, fresh clothes every wash.",
+            "price": 449,
+            "compare_price": 797,
+            "cta_text": "Shop bundle",
+            "cta_link": "#bundles"
+          }
+        }
+      },
+      "block_order": [
+        "combo_1",
+        "combo_2"
+      ],
+      "settings": {
+        "heading": "Best selling combos",
+        "kicker": "Pre-built to save you money",
+        "description": "Swipe through the boxes people order most. Each one is already priced below buying the same products on their own."
+      }
     }
   },
   "order": [
     "purelane_hero",
-    "purelane_shop"
+    "purelane_shop",
+    "purelane_combos"
   ]
 }
