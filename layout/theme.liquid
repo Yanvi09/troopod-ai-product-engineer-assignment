@@ -300,6 +300,16 @@
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
 
+    <!-- Purelane Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Purelane Assets -->
+    <link rel="stylesheet" href="{{ 'purelane.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript>{{ 'purelane.css' | asset_url | stylesheet_tag }}</noscript>
+    <script src="{{ 'purelane.js' | asset_url }}" defer></script>
+
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
