@@ -61,37 +61,62 @@
     {% endif %}
     
     <div class="purelane-shop-grid">
-      {% assign collection = collections[section.settings.collection] %}
-      {% assign limit = section.settings.products_to_show | default: 8 %}
+      <!-- Debug: Collection ID: {{ section.settings.collection }} -->
       
-      {% for product in collection.products limit: limit %}
-        <div class="purelane-shop-item">
-          <div class="purelane-shop-image">
-            {% if product.featured_image %}
-              <a href="{{ product.url }}">
-                <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
-              </a>
-            {% else %}
-              <div class="purelane-shop-placeholder">No image</div>
-            {% endif %}
+      {% if section.settings.collection != blank %}
+        {% assign collection = collections[section.settings.collection] %}
+        <!-- Debug: Collection title: {{ collection.title }} -->
+        <!-- Debug: Collection product count: {{ collection.products.size }} -->
+      {% else %}
+        {% assign collection = collections.all %}
+        <!-- Debug: Using all products -->
+      {% endif %}
+      
+      {% assign limit = section.settings.products_to_show | default: 8 %}
+      <!-- Debug: Limit: {{ limit }} -->
+      
+      {% if collection.products.size > 0 %}
+        {% for product in collection.products limit: limit %}
+          <!-- Debug: Rendering product {{ forloop.index }}: {{ product.title }} -->
+          <!-- Debug: Has featured image: {{ product.featured_image }} -->
+          <div class="purelane-shop-item">
+            <div class="purelane-shop-image">
+              {% if product.featured_image %}
+                <a href="{{ product.url }}">
+                  <img 
+                    src="{{ product.featured_image | image_url: width: 400 }}" 
+                    alt="{{ product.title | escape }}" 
+                    loading="lazy"
+                    width="400"
+                    height="400"
+                  >
+                </a>
+              {% else %}
+                <div class="purelane-shop-placeholder">No image</div>
+              {% endif %}
+            </div>
+            
+            <h3 class="purelane-shop-title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+            
+            <div class="purelane-shop-price">
+              <strong>{{ product.price | money }}</strong>
+              {% if product.compare_at_price and product.compare_at_price > product.price %}
+                <s>{{ product.compare_at_price | money }}</s>
+              {% endif %}
+            </div>
+            
+            <a href="{{ product.url }}" class="purelane-shop-button">
+              View Product
+            </a>
           </div>
-          
-          <h3 class="purelane-shop-title">
-            <a href="{{ product.url }}">{{ product.title }}</a>
-          </h3>
-          
-          <div class="purelane-shop-price">
-            <strong>{{ product.price | money }}</strong>
-            {% if product.compare_at_price > product.price %}
-              <s>{{ product.compare_at_price | money }}</s>
-            {% endif %}
-          </div>
-          
-          <a href="{{ product.url }}" class="purelane-shop-button">
-            View Product
-          </a>
+        {% endfor %}
+      {% else %}
+        <div style="background: red; color: white; padding: 20px; text-align: center;">
+          NO PRODUCTS FOUND IN COLLECTION
         </div>
-      {% endfor %}
+      {% endif %}
     </div>
   </div>
 </section>
@@ -100,6 +125,7 @@
   .purelane-shop {
     padding: 40px 20px;
     background: #f4f0fb;
+    min-height: 400px;
   }
 
   .purelane-shop-wrapper {
@@ -115,6 +141,7 @@
     letter-spacing: 0.2em;
     color: #666;
     margin-bottom: 10px;
+    display: block;
   }
 
   .purelane-shop-heading {
@@ -124,12 +151,14 @@
     text-transform: uppercase;
     color: #241a3d;
     margin-bottom: 30px;
+    display: block;
   }
 
   .purelane-shop-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+    width: 100%;
   }
 
   @media(min-width: 768px) {
@@ -145,6 +174,8 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
+    min-height: 350px;
+    position: relative;
   }
 
   .purelane-shop-image {
@@ -156,27 +187,32 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
   }
 
   .purelane-shop-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    display: block;
   }
 
   .purelane-shop-placeholder {
     color: #999;
+    display: block;
   }
 
   .purelane-shop-title {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 8px;
+    display: block;
   }
 
   .purelane-shop-title a {
     color: #241a3d;
     text-decoration: none;
+    display: block;
   }
 
   .purelane-shop-title a:hover {
@@ -188,6 +224,7 @@
     font-weight: 700;
     color: #241a3d;
     margin-bottom: 12px;
+    display: block;
   }
 
   .purelane-shop-price s {
@@ -208,6 +245,7 @@
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.1em;
+    display: block;
   }
 
   .purelane-shop-button:hover {
