@@ -1,3 +1,297 @@
+{% comment %}
+  Purelane Shop Section
+  Displays real Shopify products from the selected collection.
+{% endcomment %}
+
+<section class="purelane-shop" data-section-id="{{ section.id }}">
+  <div class="purelane-shop-wrapper">
+
+    {% if section.settings.kicker != blank %}
+      <p class="purelane-shop-kicker">
+        {{ section.settings.kicker }}
+      </p>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h2 class="purelane-shop-heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% assign collection = section.settings.collection %}
+
+    {% if collection != blank and collection.products_count > 0 %}
+
+      <div class="purelane-shop-grid">
+
+        {% assign limit = section.settings.products_to_show | default: 8 %}
+
+        {% for product in collection.products limit: limit %}
+          <article class="purelane-shop-item">
+
+            <div class="purelane-shop-image">
+
+              {% if product.featured_image %}
+                <a href="{{ product.url }}">
+                  {{
+                    product.featured_image
+                    | image_url: width: 600
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '300, 400, 600',
+                      sizes: '(min-width: 768px) 25vw, 50vw',
+                      alt: product.featured_image.alt | default: product.title
+                  }}
+                </a>
+              {% else %}
+                <div class="purelane-shop-placeholder" aria-label="No product image">
+                  No image
+                </div>
+              {% endif %}
+
+            </div>
+
+            <h3 class="purelane-shop-title">
+              <a href="{{ product.url }}">
+                {{ product.title }}
+              </a>
+            </h3>
+
+            <div class="purelane-shop-price">
+              <strong>
+                {{ product.price | money }}
+              </strong>
+
+              {% if product.compare_at_price > product.price %}
+                <s>
+                  {{ product.compare_at_price | money }}
+                </s>
+              {% endif %}
+            </div>
+
+            {% if product.available %}
+              <a
+                href="{{ product.url }}"
+                class="purelane-shop-button"
+              >
+                View Product
+              </a>
+            {% else %}
+              <span
+                class="purelane-shop-button purelane-shop-button--sold-out"
+                aria-disabled="true"
+              >
+                Sold Out
+              </span>
+            {% endif %}
+
+          </article>
+        {% endfor %}
+
+      </div>
+
+    {% else %}
+
+      <div class="purelane-shop-empty">
+        <p>No products found in this collection.</p>
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  .purelane-shop {
+    padding: 40px 20px;
+    background: #f4f0fb;
+    min-height: 400px;
+  }
+
+  .purelane-shop-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .purelane-shop-kicker {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #666;
+    margin: 0 0 10px;
+    display: block;
+  }
+
+  .purelane-shop-heading {
+    text-align: center;
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #241a3d;
+    margin: 0 0 30px;
+    display: block;
+  }
+
+  .purelane-shop-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .purelane-shop-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .purelane-shop-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 350px;
+    position: relative;
+    min-width: 0;
+  }
+
+  .purelane-shop-image {
+    height: 200px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .purelane-shop-image a {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .purelane-shop-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .purelane-shop-placeholder {
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .purelane-shop-title {
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 700;
+    margin: 0 0 8px;
+    display: block;
+  }
+
+  .purelane-shop-title a {
+    color: #241a3d;
+    text-decoration: none;
+    display: block;
+  }
+
+  .purelane-shop-title a:hover {
+    color: #4b3a8f;
+  }
+
+  .purelane-shop-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #241a3d;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .purelane-shop-price s {
+    font-size: 14px;
+    color: #999;
+    margin-left: 8px;
+  }
+
+  .purelane-shop-button {
+    margin-top: auto;
+    padding: 12px 20px;
+    background: #4b3a8f;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    display: block;
+    border: 0;
+  }
+
+  .purelane-shop-button:hover {
+    background: #6b55b8;
+  }
+
+  .purelane-shop-button--sold-out {
+    background: #777;
+    cursor: not-allowed;
+  }
+
+  .purelane-shop-button--sold-out:hover {
+    background: #777;
+  }
+
+  .purelane-shop-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+  }
+
+  @media (max-width: 767px) {
+    .purelane-shop {
+      padding: 32px 16px;
+    }
+
+    .purelane-shop-heading {
+      font-size: 28px;
+    }
+
+    .purelane-shop-grid {
+      gap: 14px;
+    }
+
+    .purelane-shop-item {
+      padding: 12px;
+    }
+
+    .purelane-shop-image {
+      height: 170px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .purelane-shop *,
+    .purelane-shop *::before,
+    .purelane-shop *::after {
+      scroll-behavior: auto !important;
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
 {% schema %}
 {
   "name": "Purelane Shop",
@@ -44,197 +338,3 @@
   ]
 }
 {% endschema %}
-
-{% comment %}
-  Purelane Shop Section
-  Displays product grid using Shopify collection products
-{% endcomment %}
-
-<section class="purelane-shop" data-section-id="{{ section.id }}">
-  <div class="purelane-shop-wrapper">
-    {% if section.settings.kicker != blank %}
-      <p class="purelane-shop-kicker">{{ section.settings.kicker }}</p>
-    {% endif %}
-    
-    {% if section.settings.heading != blank %}
-      <h2 class="purelane-shop-heading">{{ section.settings.heading }}</h2>
-    {% endif %}
-    
-    <div class="purelane-shop-grid">
-      {% assign collection = collections[section.settings.collection] %}
-      
-      {% if collection == blank or collection.products.size == 0 %}
-        {% assign collection = collections.all %}
-      {% endif %}
-      
-      {% assign limit = section.settings.products_to_show | default: 8 %}
-      
-      {% for product in collection.products limit: limit %}
-        <div class="purelane-shop-item">
-          <div class="purelane-shop-image">
-            {% if product.featured_image %}
-              <a href="{{ product.url }}">
-                <img 
-                  src="{{ product.featured_image | image_url: width: 400 }}" 
-                  alt="{{ product.title | escape }}" 
-                  loading="lazy"
-                  width="400"
-                  height="400"
-                >
-              </a>
-            {% else %}
-              <div class="purelane-shop-placeholder">No image</div>
-            {% endif %}
-          </div>
-          
-          <h3 class="purelane-shop-title">
-            <a href="{{ product.url }}">{{ product.title }}</a>
-          </h3>
-          
-          <div class="purelane-shop-price">
-            <strong>{{ product.price | money }}</strong>
-            {% if product.compare_at_price and product.compare_at_price > product.price %}
-              <s>{{ product.compare_at_price | money }}</s>
-            {% endif %}
-          </div>
-          
-          <a href="{{ product.url }}" class="purelane-shop-button">
-            View Product
-          </a>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<style>
-  .purelane-shop {
-    padding: 40px 20px;
-    background: #f4f0fb;
-    min-height: 400px;
-  }
-
-  .purelane-shop-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .purelane-shop-kicker {
-    text-align: center;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: #666;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .purelane-shop-heading {
-    text-align: center;
-    font-size: 36px;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #241a3d;
-    margin-bottom: 30px;
-    display: block;
-  }
-
-  .purelane-shop-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 100%;
-  }
-
-  @media(min-width: 768px) {
-    .purelane-shop-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .purelane-shop-item {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    min-height: 350px;
-    position: relative;
-  }
-
-  .purelane-shop-image {
-    height: 200px;
-    background: #f5f5f5;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .purelane-shop-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-  }
-
-  .purelane-shop-placeholder {
-    color: #999;
-    display: block;
-  }
-
-  .purelane-shop-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .purelane-shop-title a {
-    color: #241a3d;
-    text-decoration: none;
-    display: block;
-  }
-
-  .purelane-shop-title a:hover {
-    color: #4b3a8f;
-  }
-
-  .purelane-shop-price {
-    font-size: 18px;
-    font-weight: 700;
-    color: #241a3d;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .purelane-shop-price s {
-    font-size: 14px;
-    color: #999;
-    margin-left: 8px;
-  }
-
-  .purelane-shop-button {
-    margin-top: auto;
-    padding: 12px 20px;
-    background: #4b3a8f;
-    color: white;
-    text-align: center;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    display: block;
-  }
-
-  .purelane-shop-button:hover {
-    background: #6b55b8;
-  }
-</style>

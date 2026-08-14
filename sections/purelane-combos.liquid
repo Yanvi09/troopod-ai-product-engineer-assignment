@@ -1,3 +1,707 @@
+{% comment %}
+  Purelane Combos
+  Best-selling product combinations using real Shopify product data.
+  Product selectors remain merchant-editable in the Theme Editor.
+{% endcomment %}
+
+<section
+  id="purelane-combos-{{ section.id }}"
+  class="purelane-combos sec"
+  data-section-id="{{ section.id }}"
+>
+  <div class="wrap">
+
+    <div class="panel-head">
+      {% if section.settings.kicker != blank %}
+        <span class="kicker">{{ section.settings.kicker }}</span>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="d2">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      <div class="rule" aria-hidden="true">
+        <i></i>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+          <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+        </svg>
+        <i></i>
+      </div>
+
+      {% if section.settings.description != blank %}
+        <p class="lede">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+
+    <div class="purelane-comborail">
+
+      {% for block in section.blocks %}
+
+        {% comment %}
+          Shopify "product" settings return product objects directly.
+          If the merchant has not selected a product yet, use the known
+          Purelane product as a fallback so the section still renders.
+        {% endcomment %}
+
+        {% assign product_1 = block.settings.product_1 %}
+        {% assign product_2 = block.settings.product_2 %}
+        {% assign product_3 = block.settings.product_3 %}
+
+        {% if product_1 == blank %}
+          {% if forloop.first %}
+            {% assign product_1 = all_products['purelane-foaming-kitchen-cleaner'] %}
+          {% else %}
+            {% assign product_1 = all_products['purelane-laundry-detergent'] %}
+          {% endif %}
+        {% endif %}
+
+        {% if product_2 == blank %}
+          {% if forloop.first %}
+            {% assign product_2 = all_products['purelane-dishwash-gel'] %}
+          {% else %}
+            {% assign product_2 = all_products['purelane-fabric-conditioner'] %}
+          {% endif %}
+        {% endif %}
+
+        {% if product_3 == blank and forloop.first %}
+          {% assign product_3 = all_products['purelane-tap-cleaner'] %}
+        {% endif %}
+
+        {% assign product_count = 0 %}
+
+        {% if product_1 != blank %}
+          {% assign product_count = product_count | plus: 1 %}
+        {% endif %}
+
+        {% if product_2 != blank %}
+          {% assign product_count = product_count | plus: 1 %}
+        {% endif %}
+
+        {% if product_3 != blank %}
+          {% assign product_count = product_count | plus: 1 %}
+        {% endif %}
+
+        <article
+          class="purelane-combo glass"
+          {{ block.shopify_attributes }}
+        >
+
+          <div class="purelane-combo-tray">
+
+            {% if block.settings.save_text != blank %}
+              <span class="purelane-combo-save">
+                {{ block.settings.save_text }}
+              </span>
+            {% endif %}
+
+            {% if block.settings.flag_text != blank and forloop.first %}
+              <span class="purelane-combo-flag">
+                {{ block.settings.flag_text }}
+              </span>
+            {% endif %}
+
+            <div class="purelane-combo-stack">
+
+              {% if product_1 != blank %}
+                <a
+                  class="purelane-combo-item"
+                  href="{{ product_1.url }}"
+                  aria-label="{{ product_1.title | escape }}"
+                >
+                  <span class="purelane-combo-item-image">
+                    {% if product_1.featured_image %}
+                      {{
+                        product_1.featured_image
+                        | image_url: width: 200
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '100, 150, 200',
+                          sizes: '100px',
+                          alt: product_1.title
+                      }}
+                    {% else %}
+                      <span class="purelane-combo-no-image">
+                        No image
+                      </span>
+                    {% endif %}
+                  </span>
+
+                  <span>
+                    {{ block.settings.product_1_desc }}
+                  </span>
+                </a>
+              {% endif %}
+
+              {% if product_2 != blank %}
+                <span class="purelane-combo-plus" aria-hidden="true">+</span>
+
+                <a
+                  class="purelane-combo-item"
+                  href="{{ product_2.url }}"
+                  aria-label="{{ product_2.title | escape }}"
+                >
+                  <span class="purelane-combo-item-image">
+                    {% if product_2.featured_image %}
+                      {{
+                        product_2.featured_image
+                        | image_url: width: 200
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '100, 150, 200',
+                          sizes: '100px',
+                          alt: product_2.title
+                      }}
+                    {% else %}
+                      <span class="purelane-combo-no-image">
+                        No image
+                      </span>
+                    {% endif %}
+                  </span>
+
+                  <span>
+                    {{ block.settings.product_2_desc }}
+                  </span>
+                </a>
+              {% endif %}
+
+              {% if product_3 != blank %}
+                <span class="purelane-combo-plus" aria-hidden="true">+</span>
+
+                <a
+                  class="purelane-combo-item"
+                  href="{{ product_3.url }}"
+                  aria-label="{{ product_3.title | escape }}"
+                >
+                  <span class="purelane-combo-item-image">
+                    {% if product_3.featured_image %}
+                      {{
+                        product_3.featured_image
+                        | image_url: width: 200
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '100, 150, 200',
+                          sizes: '100px',
+                          alt: product_3.title
+                      }}
+                    {% else %}
+                      <span class="purelane-combo-no-image">
+                        No image
+                      </span>
+                    {% endif %}
+                  </span>
+
+                  <span>
+                    {{ block.settings.product_3_desc }}
+                  </span>
+                </a>
+              {% endif %}
+
+            </div>
+          </div>
+
+          <div class="purelane-combo-body">
+
+            {% if block.settings.title != blank %}
+              <h3>{{ block.settings.title }}</h3>
+            {% endif %}
+
+            <div class="purelane-combo-count">
+              {{ product_count }}
+              {% if product_count == 1 %}
+                product
+              {% else %}
+                products
+              {% endif %}
+            </div>
+
+            {% if block.settings.includes != blank %}
+              <p class="purelane-combo-includes">
+                {{ block.settings.includes }}
+              </p>
+            {% endif %}
+
+            <div class="purelane-combo-prow">
+
+              <strong>
+                ₹{{ block.settings.price }}
+              </strong>
+
+              {% if block.settings.compare_price > block.settings.price %}
+                <s>
+                  ₹{{ block.settings.compare_price }}
+                </s>
+
+                {% assign savings = block.settings.compare_price | minus: block.settings.price %}
+
+                <em>
+                  Save ₹{{ savings }}
+                </em>
+              {% endif %}
+
+            </div>
+
+            <div class="purelane-combo-fine">
+              Inclusive of all taxes · COD available
+            </div>
+
+            {% if block.settings.cta_text != blank %}
+              <a
+                class="btn btn-ghost"
+                href="{% if block.settings.cta_link != blank %}{{ block.settings.cta_link }}{% else %}#bundles{% endif %}"
+              >
+                {{ block.settings.cta_text }}
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h13m-5-6 6 6-6 6"/>
+                </svg>
+              </a>
+            {% endif %}
+
+          </div>
+
+        </article>
+
+      {% endfor %}
+
+    </div>
+
+    {% if section.blocks.size > 1 %}
+      <div class="purelane-swipecue" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h13m-5-6 6 6-6 6"/>
+        </svg>
+
+        Swipe for more combos
+      </div>
+    {% endif %}
+
+    <p class="purelane-railnote">
+      Tapping "Shop bundle" opens the bundle picker with these products already added.
+      You can still swap anything before you pay.
+    </p>
+
+  </div>
+</section>
+
+<style>
+
+  .purelane-combos-section {
+    --ink: #f4f0fb;
+    --deep: #e2daf3;
+    --brand: #4b3a8f;
+    --brand-lt: #6b55b8;
+    --paper: #241a3d;
+    --paper-2: rgba(36, 26, 61, 0.78);
+    --paper-3: rgba(36, 26, 61, 0.56);
+    --accent: #b8701c;
+    --accent-2: #c9761d;
+    --surface: #17102b;
+    --g-bg: linear-gradient(
+      158deg,
+      rgba(255, 255, 255, 0.80),
+      rgba(236, 230, 247, 0.56) 58%,
+      rgba(222, 212, 240, 0.50)
+    );
+    --g-line: rgba(75, 58, 143, 0.16);
+    --g-shadow: 0 22px 54px rgba(58, 44, 112, 0.13);
+    --g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    --r: 26px;
+    --maxw: 1180px;
+    --sec-y: 34px;
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .purelane-combos {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  .purelane-combos .d2 {
+    font-family: 'Outfit', system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.018em;
+    font-weight: 800;
+    line-height: 0.94;
+    color: var(--surface);
+    font-size: clamp(30px, 4.6vw, 54px);
+    margin: 12px 0;
+  }
+
+  .purelane-combos .kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-3);
+  }
+
+  .purelane-combos .lede {
+    font-size: clamp(15px, 1.35vw, 17.5px);
+    color: var(--paper-2);
+    max-width: 44ch;
+    margin: 14px auto 0;
+  }
+
+  .purelane-combos .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 18px;
+  }
+
+  .purelane-combos.sec {
+    position: relative;
+    padding: var(--sec-y) 0;
+  }
+
+  .purelane-combos .panel-head {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  .purelane-combos .rule {
+    margin: 0 auto;
+    justify-content: center;
+    max-width: 240px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+
+  .purelane-combos .rule i {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(75, 58, 143, 0.34)
+    );
+  }
+
+  .purelane-combos .rule svg {
+    width: 16px;
+    height: 16px;
+    color: var(--accent);
+    flex: 0 0 auto;
+  }
+
+  .purelane-comborail {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    margin: 0 -18px;
+    padding: 4px 18px 14px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .purelane-comborail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .purelane-combo {
+    flex: 0 0 302px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transition: transform 0.4s var(--ease);
+    border-radius: var(--r);
+    border: 1px solid var(--g-line);
+    background: var(--g-bg);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    box-shadow: var(--g-shadow), var(--g-inset);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .purelane-combo:hover {
+    transform: translateY(-5px);
+  }
+
+  .purelane-combo-tray {
+    padding: 14px 14px 13px;
+    border-bottom: 1px solid rgba(75, 58, 143, 0.13);
+    position: relative;
+    background: linear-gradient(
+      162deg,
+      rgba(255, 255, 255, 0.56),
+      rgba(236, 230, 247, 0.34)
+    );
+  }
+
+  .purelane-combo-save {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(201, 118, 29, 0.34);
+    color: #4f7d10;
+    margin-bottom: 13px;
+  }
+
+  .purelane-combo-flag {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 8.6px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #00706a, #004b46);
+    color: #f4fdf6;
+  }
+
+  .purelane-combo-stack {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  .purelane-combo-item {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .purelane-combo-item-image {
+    height: 66px;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .purelane-combo-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(
+      0 8px 13px rgba(0, 74, 66, 0.13)
+    );
+  }
+
+  .purelane-combo-no-image {
+    font-size: 9px;
+    color: var(--paper-3);
+  }
+
+  .purelane-combo-item > span:last-child {
+    display: block;
+    font-size: 8.6px;
+    line-height: 1.32;
+    color: var(--paper-2);
+    font-weight: 600;
+  }
+
+  .purelane-combo-plus {
+    flex: 0 0 9px;
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 12px;
+    padding-bottom: 30px;
+    text-align: center;
+  }
+
+  .purelane-combo-body {
+    padding: 15px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .purelane-combo-body h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    color: var(--surface);
+    margin: 0;
+  }
+
+  .purelane-combo-count {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper-3);
+    margin-top: 6px;
+  }
+
+  .purelane-combo-includes {
+    font-size: 12.4px;
+    color: var(--paper-2);
+    line-height: 1.55;
+    margin: 11px 0 14px;
+    flex: 1;
+  }
+
+  .purelane-combo-prow {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .purelane-combo-prow strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--surface);
+    letter-spacing: -0.02em;
+  }
+
+  .purelane-combo-prow s {
+    font-size: 13px;
+    color: var(--paper-3);
+  }
+
+  .purelane-combo-prow em {
+    font-style: normal;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(201, 118, 29, 0.14);
+    border: 1px solid rgba(201, 118, 29, 0.36);
+    color: #4f7d10;
+  }
+
+  .purelane-combo-fine {
+    font-size: 10.4px;
+    color: var(--paper-3);
+    margin-bottom: 14px;
+  }
+
+  .purelane-combos .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 46px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    transition: transform 0.35s var(--ease);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+  }
+
+  .purelane-combos .btn-ghost {
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid rgba(75, 58, 143, 0.22);
+    color: #01423b;
+  }
+
+  .purelane-combos .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .purelane-combos .btn svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+  }
+
+  .purelane-railnote {
+    text-align: center;
+    font-size: 12px;
+    color: var(--paper-3);
+    margin: 14px auto 0;
+    max-width: 62ch;
+  }
+
+  .purelane-swipecue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper-3);
+    margin-top: 2px;
+  }
+
+  .purelane-swipecue svg {
+    width: 14px;
+    height: 14px;
+    color: var(--accent);
+  }
+
+  @media (max-width: 760px) {
+    .purelane-combos-section {
+      --sec-y: 22px;
+    }
+
+    .purelane-combo {
+      flex: 0 0 268px;
+    }
+
+    .purelane-combo-item-image {
+      height: 56px;
+    }
+
+    .purelane-comborail {
+      margin: 0 -14px;
+      padding: 4px 14px 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .purelane-combos * {
+      scroll-behavior: auto !important;
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+
+</style>
+
 {% schema %}
 {
   "name": "Purelane Combos",
@@ -126,621 +830,3 @@
   ]
 }
 {% endschema %}
-
-{% comment %}
-  Purelane Combos Section
-  Horizontal scrollable combo products with pricing
-{% endcomment %}
-
-
-
-<section class="purelane-combos sec" data-section-id="{{ section.id }}">
-  <div class="wrap">
-    <div class="panel-head rv">
-      {% if section.settings.kicker != blank %}
-        <span class="kicker">{{ section.settings.kicker }}</span>
-      {% endif %}
-      
-      {% if section.settings.heading != blank %}
-        <h2 class="d2" style="margin-top:12px">{{ section.settings.heading }}</h2>
-      {% endif %}
-      
-      <div class="rule">
-        <i></i>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
-          <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
-        </svg>
-        <i></i>
-      </div>
-      
-      {% if section.settings.description != blank %}
-        <p class="lede" style="margin:14px auto 0">{{ section.settings.description }}</p>
-      {% endif %}
-    </div>
-
-    <div class="purelane-comborail rv">
-      {% for block in section.blocks %}
-        {% assign has_product_1 = false %}
-        {% assign has_product_2 = false %}
-        {% assign has_product_3 = false %}
-        
-        {% if block.settings.product_1 != blank %}
-          {% assign product_1 = all_products[block.settings.product_1] %}
-          {% assign has_product_1 = true %}
-        {% endif %}
-        
-        {% if block.settings.product_2 != blank %}
-          {% assign product_2 = all_products[block.settings.product_2] %}
-          {% assign has_product_2 = true %}
-        {% endif %}
-        
-        {% if block.settings.product_3 != blank %}
-          {% assign product_3 = all_products[block.settings.product_3] %}
-          {% assign has_product_3 = true %}
-        {% endif %}
-
-        <article class="purelane-combo glass rv rv-{{ forloop.index }}" {{ block.shopify_attributes }}>
-          <div class="purelane-combo-tray">
-            {% if block.settings.save_text != blank %}
-              <span class="purelane-combo-save">{{ block.settings.save_text }}</span>
-            {% endif %}
-            
-            {% if block.settings.flag_text != blank and forloop.first == true %}
-              <span class="purelane-combo-flag">{{ block.settings.flag_text }}</span>
-            {% endif %}
-            
-            <div class="purelane-combo-stack">
-              {% if has_product_1 %}
-                <span class="purelane-combo-item">
-                  <span class="purelane-combo-item-image" 
-                        role="img" 
-                        aria-label="{{ product_1.title }}"
-                        style="background-image: url('{{ product_1.featured_image | image_url: width: 200 }}');">
-                  </span>
-                  <span>{{ block.settings.product_1_desc }}</span>
-                </span>
-              {% endif %}
-              
-              {% if has_product_2 %}
-                <span class="purelane-combo-plus" aria-hidden="true">+</span>
-                <span class="purelane-combo-item">
-                  <span class="purelane-combo-item-image" 
-                        role="img" 
-                        aria-label="{{ product_2.title }}"
-                        style="background-image: url('{{ product_2.featured_image | image_url: width: 200 }}');">
-                  </span>
-                  <span>{{ block.settings.product_2_desc }}</span>
-                </span>
-              {% endif %}
-              
-              {% if has_product_3 %}
-                <span class="purelane-combo-plus" aria-hidden="true">+</span>
-                <span class="purelane-combo-item">
-                  <span class="purelane-combo-item-image" 
-                        role="img" 
-                        aria-label="{{ product_3.title }}"
-                        style="background-image: url('{{ product_3.featured_image | image_url: width: 200 }}');">
-                  </span>
-                  <span>{{ block.settings.product_3_desc }}</span>
-                </span>
-              {% endif %}
-            </div>
-          </div>
-          
-          <div class="purelane-combo-body">
-            {% if block.settings.title != blank %}
-              <h3>{{ block.settings.title }}</h3>
-            {% endif %}
-            
-            <div class="purelane-combo-count">
-              {% assign product_count = 0 %}
-              {% if has_product_1 %}{% assign product_count = product_count | plus: 1 %}{% endif %}
-              {% if has_product_2 %}{% assign product_count = product_count | plus: 1 %}{% endif %}
-              {% if has_product_3 %}{% assign product_count = product_count | plus: 1 %}{% endif %}
-              {{ product_count }} {% if product_count == 1 %}product{% else %}products{% endif %}
-            </div>
-            
-            {% if block.settings.includes != blank %}
-              <p class="purelane-combo-includes">{{ block.settings.includes }}</p>
-            {% endif %}
-            
-            <div class="purelane-combo-prow">
-              <strong>₹{{ block.settings.price }}</strong>
-              {% if block.settings.compare_price > block.settings.price %}
-                <s>₹{{ block.settings.compare_price }}</s>
-                {% assign savings = block.settings.compare_price | minus: block.settings.price %}
-                <em>Save ₹{{ savings }}</em>
-              {% endif %}
-            </div>
-            
-            <div class="purelane-combo-fine">Inclusive of all taxes · COD available</div>
-            
-            {% if block.settings.cta_text != blank %}
-              <a class="btn btn-ghost" href="{% if block.settings.cta_link != blank %}{{ block.settings.cta_link }}{% else %}#bundles{% endif %}">
-                {{ block.settings.cta_text }}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h13m-5-6 6 6-6 6"/>
-                </svg>
-              </a>
-            {% endif %}
-          </div>
-        </article>
-      {% endfor %}
-    </div>
-    
-    <div class="purelane-swipecue" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 12h13m-5-6 6 6-6 6"/>
-      </svg>
-      Swipe for more combos
-    </div>
-    
-    <p class="purelane-railnote">Tapping "Shop bundle" opens the bundle picker with these products already added. You can still swap anything before you pay.</p>
-  </div>
-</section>
-
-<script>
-  // Initialize reveal animations for combos section
-  document.addEventListener('DOMContentLoaded', function() {
-    const combosSection = document.querySelector('.purelane-combos');
-    if (!combosSection) return;
-
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-        }
-      });
-    }, observerOptions);
-
-    const revealElements = combosSection.querySelectorAll('.rv');
-    revealElements.forEach(el => observer.observe(el));
-  });
-</script>
-
-<style>
-  /* Combos Section Styles */
-  .purelane-combos-section {
-    --ink: #f4f0fb;
-    --deep: #e2daf3;
-    --brand: #4b3a8f;
-    --brand-lt: #6b55b8;
-    --paper: #241a3d;
-    --paper-2: rgba(36, 26, 61, 0.78);
-    --paper-3: rgba(36, 26, 61, 0.56);
-    --accent: #b8701c;
-    --accent-2: #c9761d;
-    --surface: #17102b;
-    --g-bg: linear-gradient(158deg, rgba(255, 255, 255, 0.80), rgba(236, 230, 247, 0.56) 58%, rgba(222, 212, 240, 0.50));
-    --g-line: rgba(75, 58, 143, 0.16);
-    --g-shadow: 0 22px 54px rgba(58, 44, 112, 0.13);
-    --g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.92);
-    --r: 26px;
-    --r-sm: 16px;
-    --maxw: 1180px;
-    --sec-y: 34px;
-    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-
-  .purelane-combos {
-    background: var(--ink);
-    color: var(--paper);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    line-height: 1.62;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: clip;
-  }
-
-  .purelane-combos .d1, 
-  .purelane-combos .d2, 
-  .purelane-combos .d3, 
-  .purelane-combos .d4 {
-    font-family: 'Outfit', system-ui, sans-serif;
-    text-transform: uppercase;
-    letter-spacing: -0.018em;
-    font-weight: 800;
-    line-height: 0.87;
-    color: var(--surface);
-  }
-
-  .purelane-combos .d2 {
-    font-size: clamp(30px, 4.6vw, 54px);
-    line-height: 0.94;
-  }
-
-  .purelane-combos .kicker {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--paper-3);
-  }
-
-  .purelane-combos .lede {
-    font-size: clamp(15px, 1.35vw, 17.5px);
-    color: var(--paper-2);
-    max-width: 44ch;
-  }
-
-  .purelane-combos .wrap {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 0 18px;
-  }
-
-  .purelane-combos .sec {
-    position: relative;
-    padding: var(--sec-y) 0;
-  }
-
-  .purelane-combos .panel-head {
-    text-align: center;
-    margin-bottom: 26px;
-  }
-
-  .purelane-combos .panel-head .d2 {
-    margin-bottom: 12px;
-  }
-
-  .purelane-combos .panel-head .rule {
-    margin: 0 auto;
-    justify-content: center;
-    max-width: 240px;
-    display: flex;
-    align-items: center;
-    gap: 13px;
-  }
-
-  .purelane-combos .panel-head .rule i {
-    height: 1px;
-    flex: 1;
-    background: linear-gradient(90deg, transparent, rgba(75, 58, 143, 0.34));
-  }
-
-  .purelane-combos .panel-head .rule svg {
-    width: 16px;
-    height: 16px;
-    color: var(--accent);
-    flex: 0 0 auto;
-  }
-
-  .purelane-combos .rule {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    margin: 0 0 20px;
-    max-width: 270px;
-  }
-
-  .purelane-combos .rule i {
-    height: 1px;
-    flex: 1;
-    background: linear-gradient(90deg, rgba(75, 58, 143, 0.34), transparent);
-  }
-
-  .purelane-combos .rule svg {
-    width: 16px;
-    height: 16px;
-    color: var(--accent);
-    flex: 0 0 auto;
-  }
-
-  .purelane-combos .rv {
-    opacity: 0;
-    transform: translateY(30px);
-    filter: blur(7px);
-    transition: opacity 0.95s var(--ease), transform 0.95s var(--ease), filter 0.95s var(--ease);
-  }
-
-  .purelane-combos .rv.in {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-
-  .purelane-combos .rv-1 {
-    transition-delay: 0.09s;
-  }
-
-  .purelane-combos .rv-2 {
-    transition-delay: 0.18s;
-  }
-
-  .purelane-combos .rv-3 {
-    transition-delay: 0.27s;
-  }
-
-  .purelane-combos .rv-4 {
-    transition-delay: 0.36s;
-  }
-
-  .purelane-comborail {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    margin: 0 -18px;
-    padding: 4px 18px 14px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .purelane-comborail::-webkit-scrollbar {
-    display: none;
-  }
-
-  .purelane-combo {
-    flex: 0 0 302px;
-    scroll-snap-align: start;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    transition: 0.4s var(--ease);
-    border-radius: var(--r);
-    border: 1px solid var(--g-line);
-    background: var(--g-bg);
-    backdrop-filter: blur(24px) saturate(150%);
-    -webkit-backdrop-filter: blur(24px) saturate(150%);
-    box-shadow: var(--g-shadow), var(--g-inset);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .purelane-combo:hover {
-    transform: translateY(-5px);
-  }
-
-  .purelane-combo-tray {
-    padding: 14px 14px 13px;
-    border-bottom: 1px solid rgba(75, 58, 143, 0.13);
-    position: relative;
-    background: linear-gradient(162deg, rgba(255, 255, 255, 0.56), rgba(236, 230, 247, 0.34));
-  }
-
-  .purelane-combo-save {
-    display: inline-block;
-    font-size: 9.5px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 5px 11px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.84);
-    border: 1px solid rgba(201, 118, 29, 0.34);
-    color: #4f7d10;
-    margin-bottom: 13px;
-  }
-
-  .purelane-combo-flag {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    font-size: 8.6px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #00706a, #004b46);
-    color: #f4fdf6;
-  }
-
-  .purelane-combo-stack {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-  }
-
-  .purelane-combo-item {
-    flex: 1 1 0;
-    min-width: 0;
-    text-align: center;
-  }
-
-  .purelane-combo-item-image {
-    height: 66px;
-    margin: 0 auto 8px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    filter: drop-shadow(0 8px 13px rgba(0, 74, 66, 0.13));
-  }
-
-  .purelane-combo-item span:last-child {
-    display: block;
-    font-size: 8.6px;
-    line-height: 1.32;
-    color: var(--paper-2);
-    font-weight: 600;
-  }
-
-  .purelane-combo-plus {
-    flex: 0 0 9px;
-    color: var(--accent);
-    font-weight: 800;
-    font-size: 12px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-
-  .purelane-combo-body {
-    padding: 15px 16px 18px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  .purelane-combo-body h3 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    line-height: 1.1;
-    color: var(--surface);
-  }
-
-  .purelane-combo-count {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--paper-3);
-    margin-top: 6px;
-  }
-
-  .purelane-combo-includes {
-    font-size: 12.4px;
-    color: var(--paper-2);
-    line-height: 1.55;
-    margin: 11px 0 14px;
-    flex: 1;
-  }
-
-  .purelane-combo-prow {
-    display: flex;
-    align-items: baseline;
-    gap: 9px;
-    flex-wrap: wrap;
-    margin-bottom: 6px;
-  }
-
-  .purelane-combo-prow strong {
-    font-family: 'Outfit', sans-serif;
-    font-size: 25px;
-    font-weight: 800;
-    color: var(--surface);
-    letter-spacing: -0.02em;
-  }
-
-  .purelane-combo-prow s {
-    font-size: 13px;
-    color: var(--paper-3);
-  }
-
-  .purelane-combo-prow em {
-    font-style: normal;
-    font-size: 9.5px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 9px;
-    border-radius: 999px;
-    background: rgba(201, 118, 29, 0.14);
-    border: 1px solid rgba(201, 118, 29, 0.36);
-    color: #4f7d10;
-  }
-
-  .purelane-combo-fine {
-    font-size: 10.4px;
-    color: var(--paper-3);
-    margin-bottom: 14px;
-  }
-
-  .purelane-combo .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .purelane-railnote {
-    text-align: center;
-    font-size: 12px;
-    color: var(--paper-3);
-    margin-top: 14px;
-    max-width: 62ch;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .purelane-swipecue {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--paper-3);
-    margin-top: 2px;
-  }
-
-  .purelane-swipecue svg {
-    width: 14px;
-    height: 14px;
-    color: var(--accent);
-  }
-
-  .purelane-combos .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    height: 46px;
-    padding: 0 22px;
-    border-radius: 999px;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    transition: 0.35s var(--ease);
-    white-space: nowrap;
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: inherit;
-    font-family: inherit;
-  }
-
-  .purelane-combos .btn-ghost {
-    background: rgba(255, 255, 255, 0.66);
-    border: 1px solid rgba(75, 58, 143, 0.22);
-    color: #01423b;
-  }
-
-  .purelane-combos .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.9);
-    transform: translateY(-2px);
-  }
-
-  .purelane-combos .btn svg {
-    width: 15px;
-    height: 15px;
-    flex: 0 0 auto;
-  }
-
-  @media(max-width: 760px) {
-    .purelane-combos-section {
-      --sec-y: 22px;
-    }
-    .purelane-combo {
-      flex: 0 0 268px;
-    }
-    .purelane-combo-item-image {
-      height: 56px;
-    }
-    .purelane-comborail {
-      margin: 0 -14px;
-      padding: 4px 14px 12px;
-    }
-  }
-
-  @media(prefers-reduced-motion: reduce) {
-    .purelane-combos * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-    .purelane-combos .rv {
-      opacity: 1;
-      transform: none;
-      filter: none;
-    }
-  }
-</style>

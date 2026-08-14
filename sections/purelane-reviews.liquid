@@ -111,339 +111,523 @@
 }
 {% endschema %}
 
-{% comment %}
-  Purelane Reviews Section
-  Auto-scrolling marquee of customer reviews
-{% endcomment %}
+<section
+  class="purelane-reviews"
+  data-section-id="{{ section.id }}"
+>
+  <div class="purelane-reviews-wrap">
 
+    {% if section.settings.kicker != blank
+      or section.settings.rating_text != blank
+      or section.settings.subtitle != blank
+    %}
+      <div class="purelane-reviews-header">
 
+        {% if section.settings.kicker != blank %}
+          <span class="purelane-reviews-kicker">
+            {{ section.settings.kicker }}
+          </span>
+        {% endif %}
 
-<section class="purelane-reviews sec" data-section-id="{{ section.id }}">
-  <div class="wrap">
-    <div class="purelane-revhead rv">
-      {% if section.settings.kicker != blank %}
-        <span class="kicker">{{ section.settings.kicker }}</span>
-      {% endif %}
-      
-      {% if section.settings.rating_text != blank %}
-        <span class="purelane-revhead-agg">
-          <span class="purelane-revhead-stars">★★★★★</span> 
-          <b>{{ section.settings.rating_text }}</b>
-        </span>
-      {% endif %}
-      
-      {% if section.settings.subtitle != blank %}
-        <span class="purelane-revhead-agg">Loved by <b>12 lakh+</b> homes</span>
-      {% endif %}
-    </div>
+        {% if section.settings.rating_text != blank %}
+          <span class="purelane-reviews-rating">
+            <span class="purelane-reviews-stars">★★★★★</span>
+            <strong>{{ section.settings.rating_text }}</strong>
+          </span>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <span class="purelane-reviews-subtitle">
+            {{ section.settings.subtitle }}
+          </span>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
   </div>
-  
-  <div class="purelane-revrail rv" aria-label="Customer reviews">
-    <div class="purelane-revtrack">
-      {% for block in section.blocks %}
-        <article class="purelane-rcard glass-2 rv" {{ block.shopify_attributes }}>
-          <div class="purelane-rcard-stars">{{ block.settings.stars }}</div>
-          <h5>{{ block.settings.title }}</h5>
-          <p>{{ block.settings.content }}</p>
-          <div class="purelane-rcard-who">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m5 13 4 4L19 7"/>
-            </svg>
-            <b>{{ block.settings.reviewer_name }}</b>
-            <span>· {{ block.settings.product_name }}</span>
-          </div>
-        </article>
-      {% endfor %}
-      
-      <!-- Duplicate reviews for seamless scrolling -->
-      {% for block in section.blocks %}
-        <article class="purelane-rcard glass-2 rv" aria-hidden="true">
-          <div class="purelane-rcard-stars">{{ block.settings.stars }}</div>
-          <h5>{{ block.settings.title }}</h5>
-          <p>{{ block.settings.content }}</p>
-          <div class="purelane-rcard-who">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m5 13 4 4L19 7"/>
-            </svg>
-            <b>{{ block.settings.reviewer_name }}</b>
-            <span>· {{ block.settings.product_name }}</span>
-          </div>
-        </article>
-      {% endfor %}
+
+  {% if section.blocks.size > 0 %}
+
+    <div class="purelane-reviews-rail">
+
+      <div class="purelane-reviews-track">
+
+        {% for block in section.blocks %}
+          <article
+            class="purelane-review-card"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.stars != blank %}
+              <div class="purelane-review-stars">
+                {{ block.settings.stars }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.title != blank %}
+              <h3 class="purelane-review-title">
+                {{ block.settings.title }}
+              </h3>
+            {% endif %}
+
+            {% if block.settings.content != blank %}
+              <p class="purelane-review-content">
+                {{ block.settings.content }}
+              </p>
+            {% endif %}
+
+            <div class="purelane-review-author">
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m5 13 4 4L19 7"/>
+              </svg>
+
+              {% if block.settings.reviewer_name != blank %}
+                <strong>{{ block.settings.reviewer_name }}</strong>
+              {% endif %}
+
+              {% if block.settings.product_name != blank %}
+                <span>
+                  · {{ block.settings.product_name }}
+                </span>
+              {% endif %}
+
+            </div>
+          </article>
+        {% endfor %}
+
+
+        {%- comment -%}
+          Duplicate cards for seamless marquee animation.
+        {%- endcomment -%}
+
+        {% for block in section.blocks %}
+          <article
+            class="purelane-review-card"
+            aria-hidden="true"
+          >
+            {% if block.settings.stars != blank %}
+              <div class="purelane-review-stars">
+                {{ block.settings.stars }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.title != blank %}
+              <h3 class="purelane-review-title">
+                {{ block.settings.title }}
+              </h3>
+            {% endif %}
+
+            {% if block.settings.content != blank %}
+              <p class="purelane-review-content">
+                {{ block.settings.content }}
+              </p>
+            {% endif %}
+
+            <div class="purelane-review-author">
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m5 13 4 4L19 7"/>
+              </svg>
+
+              {% if block.settings.reviewer_name != blank %}
+                <strong>{{ block.settings.reviewer_name }}</strong>
+              {% endif %}
+
+              {% if block.settings.product_name != blank %}
+                <span>
+                  · {{ block.settings.product_name }}
+                </span>
+              {% endif %}
+
+            </div>
+          </article>
+        {% endfor %}
+
+      </div>
+
     </div>
-  </div>
+
+  {% else %}
+
+    <div class="purelane-reviews-empty">
+      Add review blocks from the Shopify theme editor.
+    </div>
+
+  {% endif %}
 </section>
 
-<script>
-  // Initialize reveal animations for reviews section
-  document.addEventListener('DOMContentLoaded', function() {
-    const reviewsSection = document.querySelector('.purelane-reviews');
-    if (!reviewsSection) return;
-
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-        }
-      });
-    }, observerOptions);
-
-    const revealElements = reviewsSection.querySelectorAll('.rv');
-    revealElements.forEach(el => observer.observe(el));
-  });
-</script>
 
 <style>
-  /* Reviews Section Styles */
+
   .purelane-reviews-section {
-    --ink: #f4f0fb;
-    --deep: #e2daf3;
-    --brand: #4b3a8f;
-    --brand-lt: #6b55b8;
-    --paper: #241a3d;
-    --paper-2: rgba(36, 26, 61, 0.78);
-    --paper-3: rgba(36, 26, 61, 0.56);
-    --accent: #b8701c;
-    --accent-2: #c9761d;
-    --surface: #17102b;
-    --g-bg: linear-gradient(158deg, rgba(255, 255, 255, 0.80), rgba(236, 230, 247, 0.56) 58%, rgba(222, 212, 240, 0.50));
-    --g-line: rgba(75, 58, 143, 0.16);
-    --g-shadow: 0 22px 54px rgba(58, 44, 112, 0.13);
-    --g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.92);
-    --r: 26px;
-    --r-sm: 16px;
-    --maxw: 1180px;
-    --sec-y: 34px;
-    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    --review-bg: #f4f0fb;
+    --review-paper: #241a3d;
+    --review-paper-soft: rgba(36, 26, 61, 0.72);
+    --review-paper-muted: rgba(36, 26, 61, 0.54);
+    --review-accent: #b8701c;
+    --review-brand: #4b3a8f;
+    --review-border: rgba(75, 58, 143, 0.16);
   }
+
 
   .purelane-reviews {
-    background: var(--ink);
-    color: var(--paper);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    display: block;
+    width: 100%;
+    background: var(--review-bg);
+    color: var(--review-paper);
+    font-family:
+      'Inter',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
     line-height: 1.62;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: clip;
+    overflow: hidden;
+    padding: 34px 0;
+    box-sizing: border-box;
   }
 
-  .purelane-reviews .kicker {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--paper-3);
+
+  .purelane-reviews *,
+  .purelane-reviews *::before,
+  .purelane-reviews *::after {
+    box-sizing: border-box;
   }
 
-  .purelane-reviews .wrap {
-    max-width: var(--maxw);
+
+  .purelane-reviews-wrap {
+    width: 100%;
+    max-width: 1180px;
     margin: 0 auto;
     padding: 0 18px;
   }
 
-  .purelane-reviews .sec {
-    position: relative;
-    padding: var(--sec-y) 0;
-  }
 
-  .purelane-revhead {
+  /* HEADER */
+
+  .purelane-reviews-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px 18px;
     flex-wrap: wrap;
-    margin-bottom: 14px;
+    gap: 10px 18px;
+    margin-bottom: 18px;
+    text-align: center;
   }
 
-  .purelane-revhead-agg {
+
+  .purelane-reviews-kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--review-paper-muted);
+  }
+
+
+  .purelane-reviews-rating {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     font-size: 11.5px;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
     text-transform: uppercase;
-    color: var(--paper-2);
+    color: var(--review-paper-soft);
   }
 
-  .purelane-revhead-agg b {
-    font-family: 'Outfit', sans-serif;
-    font-size: 16px;
-    color: var(--accent);
+
+  .purelane-reviews-rating strong {
+    font-size: 12px;
+    color: var(--review-accent);
     letter-spacing: 0;
   }
 
-  .purelane-revhead-stars {
-    color: var(--accent);
+
+  .purelane-reviews-stars {
+    color: var(--review-accent);
     font-size: 12px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    white-space: nowrap;
   }
 
-  .purelane-revrail {
+
+  .purelane-reviews-subtitle {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--review-paper-soft);
+  }
+
+
+  /* RAIL */
+
+  .purelane-reviews-rail {
+    display: block;
+    width: 100%;
     overflow: hidden;
     position: relative;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+
+    -webkit-mask-image:
+      linear-gradient(
+        90deg,
+        transparent,
+        #000 7%,
+        #000 93%,
+        transparent
+      );
+
+    mask-image:
+      linear-gradient(
+        90deg,
+        transparent,
+        #000 7%,
+        #000 93%,
+        transparent
+      );
   }
 
-  .purelane-revtrack {
+
+  .purelane-reviews-track {
     display: flex;
+    align-items: stretch;
     gap: 12px;
     width: max-content;
-    animation: marq 52s linear infinite;
+    animation: purelaneReviewsMarquee 52s linear infinite;
+    will-change: transform;
   }
 
-  .purelane-revrail:hover .purelane-revtrack,
-  .purelane-revrail:focus-within .purelane-revtrack {
+
+  .purelane-reviews-rail:hover
+  .purelane-reviews-track,
+
+  .purelane-reviews-rail:focus-within
+  .purelane-reviews-track {
     animation-play-state: paused;
   }
 
-  @keyframes marq {
+
+  @keyframes purelaneReviewsMarquee {
+
     from {
       transform: translate3d(0, 0, 0);
     }
+
     to {
       transform: translate3d(-50%, 0, 0);
     }
+
   }
 
-  .purelane-rcard {
-    flex: 0 0 auto;
+
+  /* CARD */
+
+  .purelane-review-card {
+    flex: 0 0 284px;
     width: 284px;
-    padding: 15px 17px;
-    border-radius: 18px;
-    background: linear-gradient(158deg, rgba(236, 230, 247, 0.10), rgba(0, 48, 46, 0.22));
-    backdrop-filter: blur(18px) saturate(135%);
-    -webkit-backdrop-filter: blur(18px) saturate(135%);
-    border: 1px solid rgba(236, 230, 247, 0.16);
-    border-radius: var(--r);
-    box-shadow: 0 18px 48px rgba(18, 12, 34, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-    position: relative;
+    min-height: 190px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 18px 18px;
+
+    border: 1px solid var(--review-border);
+    border-radius: 26px;
+
+    background:
+      linear-gradient(
+        158deg,
+        rgba(255, 255, 255, 0.82),
+        rgba(236, 230, 247, 0.68)
+      );
+
+    box-shadow:
+      0 18px 48px rgba(58, 44, 112, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+    color: var(--review-paper);
+
     overflow: hidden;
   }
 
-  .purelane-rcard-stars {
-    color: var(--accent);
-    font-size: 10.5px;
-    letter-spacing: 0.2em;
-    margin-bottom: 9px;
+
+  .purelane-review-stars {
+    color: var(--review-accent);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    line-height: 1.2;
+    margin-bottom: 10px;
   }
 
-  .purelane-rcard h5 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 12px;
+
+  .purelane-review-title {
+    margin: 0 0 8px;
+
+    font-family:
+      'Outfit',
+      'Inter',
+      system-ui,
+      sans-serif;
+
+    font-size: 13px;
     font-weight: 700;
-    text-transform: uppercase;
+    line-height: 1.35;
     letter-spacing: 0.05em;
-    color: var(--surface);
-    margin-bottom: 7px;
+    text-transform: uppercase;
+
+    color: var(--review-paper);
   }
 
-  .purelane-rcard p {
+
+  .purelane-review-content {
+    margin: 0 0 14px;
+
     font-size: 12.6px;
-    color: var(--paper-2);
     line-height: 1.52;
-    margin-bottom: 11px;
+
+    color: var(--review-paper-soft);
   }
 
-  .purelane-rcard-who {
+
+  .purelane-review-author {
     display: flex;
     align-items: center;
     gap: 7px;
+
+    margin-top: auto;
+
     font-size: 9.5px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    line-height: 1.4;
+
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--paper-3);
+
+    color: var(--review-paper-muted);
   }
 
-  .purelane-rcard-who b {
-    color: var(--surface);
+
+  .purelane-review-author strong {
+    color: var(--review-paper);
     font-weight: 700;
   }
 
-  .purelane-rcard-who svg {
+
+  .purelane-review-author span {
+    color: var(--review-paper-muted);
+  }
+
+
+  .purelane-review-author svg {
+    flex: 0 0 auto;
+
     width: 12px;
     height: 12px;
-    color: var(--accent);
-    flex: 0 0 auto;
+
+    color: var(--review-accent);
   }
 
-  .purelane-reviews .rv {
-    opacity: 0;
-    transform: translateY(30px);
-    filter: blur(7px);
-    transition: opacity 0.95s var(--ease), transform 0.95s var(--ease), filter 0.95s var(--ease);
+
+  .purelane-reviews-empty {
+    max-width: 600px;
+    margin: 20px auto 0;
+    padding: 30px;
+
+    border: 1px dashed var(--review-border);
+    border-radius: 18px;
+
+    text-align: center;
+    color: var(--review-paper-muted);
   }
 
-  .purelane-reviews .rv.in {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
 
-  .purelane-reviews .rv-1 {
-    transition-delay: 0.09s;
-  }
+  /* MOBILE */
 
-  .purelane-reviews .rv-2 {
-    transition-delay: 0.18s;
-  }
+  @media screen and (max-width: 760px) {
 
-  .purelane-reviews .rv-3 {
-    transition-delay: 0.27s;
-  }
-
-  .purelane-reviews .rv-4 {
-    transition-delay: 0.36s;
-  }
-
-  .purelane-reviews .rv-5 {
-    transition-delay: 0.45s;
-  }
-
-  .purelane-reviews .rv-6 {
-    transition-delay: 0.54s;
-  }
-
-  .purelane-reviews .rv-7 {
-    transition-delay: 0.63s;
-  }
-
-  .purelane-reviews .rv-8 {
-    transition-delay: 0.72s;
-  }
-
-  @media(max-width: 760px) {
-    .purelane-reviews-section {
-      --sec-y: 22px;
+    .purelane-reviews {
+      padding: 24px 0;
     }
-    .purelane-rcard {
+
+
+    .purelane-reviews-wrap {
+      padding: 0 14px;
+    }
+
+
+    .purelane-reviews-header {
+      gap: 8px 12px;
+      margin-bottom: 16px;
+    }
+
+
+    .purelane-reviews-kicker,
+    .purelane-reviews-rating,
+    .purelane-reviews-subtitle {
+      font-size: 10px;
+    }
+
+
+    .purelane-review-card {
+      flex-basis: 250px;
       width: 250px;
-      padding: 13px 14px;
+      min-height: 180px;
+      padding: 15px;
+      border-radius: 20px;
     }
-    .purelane-revtrack {
+
+
+    .purelane-reviews-track {
       animation-duration: 40s;
     }
+
   }
 
-  @media(prefers-reduced-motion: reduce) {
-    .purelane-revtrack {
+
+  /* ACCESSIBILITY */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .purelane-reviews-track {
       animation: none;
-    }
-    .purelane-reviews * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-    .purelane-reviews .rv {
-      opacity: 1;
       transform: none;
-      filter: none;
     }
+
   }
+
+
+  /* KEYBOARD FOCUS */
+
+  .purelane-review-card a:focus-visible,
+  .purelane-review-card button:focus-visible {
+    outline: 3px solid var(--review-brand);
+    outline-offset: 3px;
+  }
+
 </style>
