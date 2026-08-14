@@ -15,11 +15,11 @@
     {% endif %}
     
     {% if product.featured_image %}
-      <span class="purelane-product-card-image" 
+      <a href="{{ product.url }}" class="purelane-product-card-image" 
             role="img" 
             aria-label="{{ product.title }}"
             style="background-image: url('{{ product.featured_image | image_url: width: 400 }}');">
-      </span>
+      </a>
     {% else %}
       <span class="purelane-product-card-image purelane-product-card-placeholder" 
             role="img" 

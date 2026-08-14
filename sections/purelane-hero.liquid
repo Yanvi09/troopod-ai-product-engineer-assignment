@@ -180,11 +180,11 @@
         <div class="hslide hs1 on" data-n="1">
           {% if section.settings.product_1 != blank %}
             {% assign product_1 = all_products[section.settings.product_1] %}
-            <span class="hp a d1" 
+            <a href="{{ product_1.url }}" class="hp a d1" 
                   style="background-image: url('{{ product_1.featured_image | image_url: width: 600 }}');"
                   role="img" 
                   aria-label="{{ product_1.title }}">
-            </span>
+            </a>
             <div class="glass-2 ptag">
               <span class="lbl">Single bottle</span>
               <span class="val">
@@ -207,20 +207,20 @@
         <!-- Slide 2: Two Products -->
         <div class="hslide hs2" data-n="2">
           {% if section.settings.product_1 != blank %}
-            <span class="hp a d1" 
+            <a href="{{ product_1.url }}" class="hp a d1" 
                   style="background-image: url('{{ product_1.featured_image | image_url: width: 600 }}');"
                   role="img" 
                   aria-label="{{ product_1.title }}">
-            </span>
+            </a>
           {% endif %}
           
           {% if section.settings.product_2 != blank %}
             {% assign product_2 = all_products[section.settings.product_2] %}
-            <span class="hp b d2" 
+            <a href="{{ product_2.url }}" class="hp b d2" 
                   style="background-image: url('{{ product_2.featured_image | image_url: width: 600 }}');"
                   role="img" 
                   aria-label="{{ product_2.title }}">
-            </span>
+            </a>
             <div class="glass-2 ptag">
               <span class="lbl">Any 2 products</span>
               <span class="val">
@@ -235,28 +235,28 @@
         <!-- Slide 3: Three Products -->
         <div class="hslide hs3" data-n="3">
           {% if section.settings.product_1 != blank %}
-            <span class="hp a d1" 
+            <a href="{{ product_1.url }}" class="hp a d1" 
                   style="background-image: url('{{ product_1.featured_image | image_url: width: 600 }}');"
                   role="img" 
                   aria-label="{{ product_1.title }}">
-            </span>
+            </a>
           {% endif %}
           
           {% if section.settings.product_2 != blank %}
-            <span class="hp b d2" 
+            <a href="{{ product_2.url }}" class="hp b d2" 
                   style="background-image: url('{{ product_2.featured_image | image_url: width: 600 }}');"
                   role="img" 
                   aria-label="{{ product_2.title }}">
-            </span>
+            </a>
           {% endif %}
           
           {% if section.settings.product_3 != blank %}
             {% assign product_3 = all_products[section.settings.product_3] %}
-            <span class="hp c d3" 
+            <a href="{{ product_3.url }}" class="hp c d3" 
                   style="background-image: url('{{ product_3.featured_image | image_url: width: 600 }}');"
                   role="img" 
                   aria-label="{{ product_3.title }}">
-            </span>
+            </a>
             <div class="glass-2 ptag">
               <span class="lbl">Any 3 products</span>
               <span class="val">

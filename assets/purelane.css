@@ -399,6 +399,8 @@
   transform: translateY(28px) scale(0.94);
   transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
   filter: drop-shadow(0 14px 22px rgba(0, 74, 66, 0.15));
+  display: block;
+  text-decoration: none;
 }
 
 .purelane-hero .hslide.on .hp {
@@ -747,6 +749,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  display: block;
+  text-decoration: none;
 }
 
 .purelane-product-card-placeholder {
