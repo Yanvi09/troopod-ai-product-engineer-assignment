@@ -1,99 +1,180 @@
-# Dawn
+# Purelane — Shopify Theme Build
 
-[![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
+A Shopify theme implementation for Purelane, a plant-based homecare brand. The build focuses on turning the provided homepage design into reusable, merchant-editable Shopify sections using Liquid and Shopify's native theme architecture.
 
-[Getting started](#getting-started) |
-[Staying up to date with Dawn changes](#staying-up-to-date-with-dawn-changes) |
-[Developer tools](#developer-tools) |
-[Contributing](#contributing) |
-[Code of conduct](#code-of-conduct) |
-[Theme Store submission](#theme-store-submission) |
-[License](#license)
+## What I Built
 
-Dawn represents a HTML-first, JavaScript-only-as-needed approach to theme development. It's Shopify's first source available theme with performance, flexibility, and [Online Store 2.0 features](https://www.shopify.com/partners/blog/shopify-online-store) built-in and acts as a reference for building Shopify themes.
+Implemented the Purelane homepage with five custom sections:
 
-* **Web-native in its purest form:** Themes run on the [evergreen web](https://www.w3.org/2001/tag/doc/evergreen-web/). We leverage the latest web browsers to their fullest, while maintaining support for the older ones through progressive enhancement—not polyfills.
-* **Lean, fast, and reliable:** Functionality and design defaults to “no” until it meets this requirement. Code ships on quality. Themes must be built with purpose. They shouldn’t support each and every feature in Shopify.
-* **Server-rendered:** HTML must be rendered by Shopify servers using Liquid. Business logic and platform primitives such as translations and money formatting don’t belong on the client. Async and on-demand rendering of parts of the page is OK, but we do it sparingly as a progressive enhancement.
-* **Functional, not pixel-perfect:** The Web doesn’t require each page to be rendered pixel-perfect by each browser engine. Using semantic markup, progressive enhancement, and clever design, we ensure that themes remain functional regardless of the browser.
+- **Purelane Hero**
+  - Main brand message
+  - Primary and secondary CTAs
+  - Product highlights
 
-You can find a more detailed version of our theme code principles in the [contribution guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md#theme-code-principles).
+- **Purelane Reviews**
+  - Reusable review blocks
+  - Star ratings
+  - Customer name and product reference
+  - Horizontal review rail
 
-## Getting started
-We recommend using Dawn as a starting point for theme development. [Learn more on Shopify.dev](https://shopify.dev/themes/getting-started/create).
+- **Purelane Shop**
+  - Real Shopify products from a selected collection
+  - Configurable number of products
+  - Product image, title and price
+  - Compare-at pricing
+  - Product availability / sold-out state
+  - Responsive product grid
 
-> If you're building a theme for the Shopify Theme Store, then you can use Dawn as a starting point. However, the theme that you submit needs to be [substantively different from Dawn](https://shopify.dev/themes/store/requirements#uniqueness) so that it provides added value for merchants. Learn about the [ways that you can use Dawn](https://shopify.dev/themes/tools/dawn#ways-to-use-dawn).
+- **Best-Selling Combos**
+  - Reusable combo blocks
+  - Product descriptions
+  - Savings and comparison pricing
+  - CTA buttons
 
-Please note that the main branch may include code for features not yet released. The "stable" version of Dawn is available in the theme store.
+- **Bundles**
+  - Configurable bundle tiers
+  - Product count
+  - Pricing and comparison pricing
+  - Bundle benefits
+  - Featured / most-popular tier
 
-## Staying up to date with Dawn changes
+## Key Shopify Implementation
 
-Say you're building a new theme off Dawn but you still want to be able to pull in the latest changes, you can add a remote `upstream` pointing to this Dawn repository.
+The sections use Shopify's native theme architecture and are configurable through the Shopify Theme Editor.
 
-1. Navigate to your local theme folder.
-2. Verify the list of remotes and validate that you have both an `origin` and `upstream`:
-```sh
-git remote -v
-```
-3. If you don't see an `upstream`, you can add one that points to Shopify's Dawn repository:
-```sh
-git remote add upstream https://github.com/Shopify/dawn.git
-```
-4. Pull in the latest Dawn changes into your repository:
-```sh
-git fetch upstream
-git pull upstream main
-```
+The product section uses Shopify collection data rather than hardcoded product cards:
 
-## Developer tools
+- `section.settings.collection`
+- `collection.products`
+- `product.featured_image`
+- `product.title`
+- `product.price`
+- `product.compare_at_price`
+- `product.available`
+- `product.url`
 
-There are a number of really useful tools that the Shopify Themes team uses during development. Dawn is already set up to work with these tools.
+This keeps product information managed by Shopify rather than duplicated inside the theme code.
 
-### Shopify CLI
+## What I Flagged in the Original Build
 
-[Shopify CLI](https://github.com/Shopify/shopify-cli) helps you build Shopify themes faster and is used to automate and enhance your local development workflow. It comes bundled with a suite of commands for developing Shopify themes—everything from working with themes on a Shopify store (e.g. creating, publishing, deleting themes) or launching a development server for local theme development.
+The main issue I identified during implementation was that the product section was not reliably rendering the expected products on the homepage.
 
-You can follow this [quick start guide for theme developers](https://shopify.dev/docs/themes/tools/cli) to get started.
+I traced this to the section rendering / collection handling rather than changing the Shopify catalog itself.
 
-### Theme Check
+I simplified the rendering path so the section directly uses the collection selected in the section settings and renders the products from that collection.
 
-We recommend using [Theme Check](https://github.com/shopify/theme-check) as a way to validate and lint your Shopify themes.
+I also removed unnecessary rendering dependencies that could prevent the product cards from appearing.
 
-We've added Theme Check to Dawn's [list of VS Code extensions](/.vscode/extensions.json) so if you're using Visual Studio Code as your code editor of choice, you'll be prompted to install the [Theme Check VS Code](https://marketplace.visualstudio.com/items?itemName=Shopify.theme-check-vscode) extension upon opening VS Code after you've forked and cloned Dawn.
+The final implementation keeps the product rendering logic straightforward and Shopify-native.
 
-You can also run it from a terminal with the following Shopify CLI command:
+## What I Changed and Why
 
-```bash
-shopify theme check
-```
+### Product Grid
 
-### Continuous Integration
+Changed the product grid to render directly from the selected Shopify collection.
 
-Dawn uses [GitHub Actions](https://github.com/features/actions) to maintain the quality of the theme. [This is a starting point](https://github.com/Shopify/dawn/blob/main/.github/workflows/ci.yml) and what we suggest to use in order to ensure you're building better themes. Feel free to build off of it!
+This provides:
 
-#### Shopify/lighthouse-ci-action
+- Real Shopify product data
+- Merchant-controlled collection selection
+- Configurable product count
+- Product availability handling
+- Responsive layout
+- Image fallback when a product has no featured image
 
-We love fast websites! Which is why we created [Shopify/lighthouse-ci-action](https://github.com/Shopify/lighthouse-ci-action). This runs a series of [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) audits for the home, product and collections pages on a store to ensure code that gets added doesn't degrade storefront performance over time.
+### Homepage Sections
 
-#### Shopify/theme-check-action
+Built the Purelane sections as separate Liquid files rather than putting the complete homepage into one large template.
 
-Dawn runs [Theme Check](#Theme-Check) on every commit via [Shopify/theme-check-action](https://github.com/Shopify/theme-check-action).
+This makes the sections easier to:
 
-## Contributing
+- Edit
+- Reuse
+- Configure through the Shopify Theme Editor
+- Maintain independently
 
-Want to make commerce better for everyone by contributing to Dawn? We'd love your help! Please read our [contributing guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build for Dawn.
+### Responsive UI
 
-## Code of conduct
+Added responsive layouts for the main product and content sections so the homepage works across desktop and smaller screens.
 
-All developers who wish to contribute through code or issues, please first read our [Code of Conduct](https://github.com/Shopify/dawn/blob/main/.github/CODE_OF_CONDUCT.md).
+## What I Would Improve With More Time
 
-## Theme Store submission
+If I had more time, I would focus on:
 
-The [Shopify Theme Store](https://themes.shopify.com/) is the place where Shopify merchants find the themes that they'll use to showcase and support their business. As a theme partner, you can create themes for the Shopify Theme Store and reach an international audience of an ever-growing number of entrepreneurs.
+1. Connecting combo and bundle CTAs to a more complete Shopify cart / bundle flow.
+2. Improving the bundle picker interaction so selected products can be changed before checkout.
+3. Adding stronger product-level accessibility and interaction states.
+4. Testing the theme across additional screen sizes and Shopify storefront states.
+5. Further separating shared styles into reusable theme assets where appropriate.
+6. Adding automated checks for the main Liquid rendering paths.
 
-Ensure that you follow the list of [theme store requirements](https://shopify.dev/themes/store/requirements) if you're interested in becoming a [Shopify Theme Partner](https://themes.shopify.com/services/themes/guidelines) and building themes for the Shopify platform.
+The current implementation intentionally avoids adding unnecessary complexity where the assignment does not require it.
 
-## License
+## AI Workflow
 
-Copyright (c) 2021-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
+AI was used as a development assistant during the implementation, primarily for:
+
+- Exploring Shopify Liquid approaches
+- Debugging rendering issues
+- Reviewing implementation options
+- Iterating on CSS and section structure
+- Troubleshooting Shopify theme behavior
+
+I delegated implementation/debugging tasks to AI, but reviewed the resulting code and verified the behavior in the Shopify theme editor.
+
+### Where AI Failed
+
+The product grid issue was a good example of where AI assistance was not sufficient on its own.
+
+Several attempted fixes did not resolve the rendering problem. The issue required going back to the actual Liquid section and checking how the selected collection and product loop were being rendered.
+
+This reinforced that AI-generated fixes need to be tested against the actual Shopify runtime rather than accepted based only on the code looking correct.
+
+### What I Would Systematize
+
+For repeated Shopify builds, I would create a more systematic workflow:
+
+1. Inspect the existing theme structure first.
+2. Identify the exact data source for each section.
+3. Implement the smallest working Liquid version.
+4. Verify the section in Shopify Theme Editor.
+5. Test empty, missing-image and sold-out states.
+6. Only then add styling or interactions.
+7. Keep debugging changes separate from the final implementation.
+
+This reduces unnecessary iterations and makes AI-assisted development easier to review.
+
+## Metafields / Metaobjects
+
+No custom Shopify metafield or metaobject definitions were created for this implementation.
+
+The build uses Shopify's existing product and collection objects and section schema settings.
+
+## Tech Stack
+
+- Shopify
+- Liquid
+- Shopify Theme Schema
+- HTML
+- CSS
+- JavaScript
+- Dawn theme
+
+## Project Structure
+
+```text
+sections/
+├── purelane-hero.liquid
+├── purelane-reviews.liquid
+├── purelane-shop.liquid
+├── purelane-combos.liquid
+└── purelane-bundles.liquid
+
+templates/
+└── index.json
+
+assets/
+└── Theme styles and JavaScript
+
+snippets/
+└── Theme reusable components
