@@ -106,8 +106,7 @@
         {
           "type": "url",
           "id": "cta_link",
-          "label": "CTA Link",
-          "default": "#bundles"
+          "label": "CTA Link"
         }
       ]
     }
@@ -258,7 +257,7 @@
             <div class="purelane-combo-fine">Inclusive of all taxes · COD available</div>
             
             {% if block.settings.cta_text != blank %}
-              <a class="btn btn-ghost" href="{{ block.settings.cta_link }}">
+              <a class="btn btn-ghost" href="{% if block.settings.cta_link != blank %}{{ block.settings.cta_link }}{% else %}#bundles{% endif %}">
                 {{ block.settings.cta_text }}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M5 12h13m-5-6 6 6-6 6"/>
