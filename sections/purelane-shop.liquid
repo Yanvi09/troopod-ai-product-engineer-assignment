@@ -82,51 +82,32 @@
         {% assign collection = collections.all %}
       %}
 
-      {% for product in collection.products limit: section.settings.products_to_show %}
-        {% assign badge_text = '' %}
-        {% if forloop.first == true %}
-          {% assign badge_text = 'Best seller' %}
-        {% elsif forloop.index == 3 %}
-          {% assign badge_text = 'Top rated' %}
-        {% elsif forloop.index == 4 %}
-          {% assign badge_text = 'New' %}
-        {% endif %}
+      {% if collection.products.size > 0 %}
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          {% assign badge_text = '' %}
+          {% if forloop.first == true %}
+            {% assign badge_text = 'Best seller' %}
+          {% elsif forloop.index == 3 %}
+            {% assign badge_text = 'Top rated' %}
+          {% elsif forloop.index == 4 %}
+            {% assign badge_text = 'New' %}
+          {% endif %}
 
-        <div class="purelane-shelf-item rv rv-{{ forloop.index }}">
-          {% render 'product-card',
-            product: product,
-            badge_text: badge_text,
-            show_rating: section.settings.show_rating
-          %}
-        </div>
-      {% endfor %}
+          <div class="purelane-shelf-item">
+            {% render 'product-card',
+              product: product,
+              badge_text: badge_text,
+              show_rating: section.settings.show_rating
+            %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No products found in collection.</p>
+      {% endif %}
     </div>
   </div>
 </section>
 
-<script>
-  // Initialize reveal animations for shop section
-  document.addEventListener('DOMContentLoaded', function() {
-    const shopSection = document.querySelector('.purelane-shop');
-    if (!shopSection) return;
-
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-        }
-      });
-    }, observerOptions);
-
-    const revealElements = shopSection.querySelectorAll('.rv');
-    revealElements.forEach(el => observer.observe(el));
-  });
-</script>
 
 <style>
   /* Shop Section Styles */
@@ -250,10 +231,9 @@
   }
 
   .purelane-shop .rv {
-    opacity: 0;
-    transform: translateY(30px);
-    filter: blur(7px);
-    transition: opacity 0.95s var(--ease), transform 0.95s var(--ease), filter 0.95s var(--ease);
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   .purelane-shop .rv.in {
@@ -298,6 +278,7 @@
     display: grid;
     gap: 14px;
     grid-template-columns: repeat(2, 1fr);
+    width: 100%;
   }
 
   @media(min-width: 860px) {

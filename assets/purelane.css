@@ -710,6 +710,8 @@
   box-shadow: var(--g-shadow), var(--g-inset);
   position: relative;
   overflow: hidden;
+  width: 100%;
+  min-height: 280px;
 }
 
 .purelane-product-card:hover {
