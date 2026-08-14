@@ -61,24 +61,38 @@
     {% endif %}
     
     <div class="purelane-shop-grid">
-      <!-- Debug: Collection ID: {{ section.settings.collection }} -->
+      <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+        DEBUG: Collection ID: {{ section.settings.collection | json_encode }}
+      </div>
       
       {% if section.settings.collection != blank %}
         {% assign collection = collections[section.settings.collection] %}
-        <!-- Debug: Collection title: {{ collection.title }} -->
-        <!-- Debug: Collection product count: {{ collection.products.size }} -->
+        <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+          DEBUG: Collection title: {{ collection.title }}
+        </div>
+        <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+          DEBUG: Collection product count: {{ collection.products.size }}
+        </div>
       {% else %}
         {% assign collection = collections.all %}
-        <!-- Debug: Using all products -->
+        <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+          DEBUG: Using all products
+        </div>
       {% endif %}
       
       {% assign limit = section.settings.products_to_show | default: 8 %}
-      <!-- Debug: Limit: {{ limit }} -->
+      <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+        DEBUG: Limit: {{ limit }}
+      </div>
       
       {% if collection.products.size > 0 %}
         {% for product in collection.products limit: limit %}
-          <!-- Debug: Rendering product {{ forloop.index }}: {{ product.title }} -->
-          <!-- Debug: Has featured image: {{ product.featured_image }} -->
+          <div style="background: lightblue; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+            DEBUG: Rendering product {{ forloop.index }}: {{ product.title }}
+          </div>
+          <div style="background: lightblue; padding: 10px; margin-bottom: 10px; font-weight: bold;">
+            DEBUG: Has featured image: {{ product.featured_image }}
+          </div>
           <div class="purelane-shop-item">
             <div class="purelane-shop-image">
               {% if product.featured_image %}
@@ -113,7 +127,7 @@
           </div>
         {% endfor %}
       {% else %}
-        <div style="background: red; color: white; padding: 20px; text-align: center;">
+        <div style="background: red; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px;">
           NO PRODUCTS FOUND IN COLLECTION
         </div>
       {% endif %}
