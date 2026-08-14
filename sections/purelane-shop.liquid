@@ -61,76 +61,48 @@
     {% endif %}
     
     <div class="purelane-shop-grid">
-      <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-        DEBUG: Collection ID: {{ section.settings.collection | json_encode }}
-      </div>
+      {% assign collection = collections[section.settings.collection] %}
       
-      {% if section.settings.collection != blank %}
-        {% assign collection = collections[section.settings.collection] %}
-        <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-          DEBUG: Collection title: {{ collection.title }}
-        </div>
-        <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-          DEBUG: Collection product count: {{ collection.products.size }}
-        </div>
-      {% else %}
+      {% if collection == blank or collection.products.size == 0 %}
         {% assign collection = collections.all %}
-        <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-          DEBUG: Using all products
-        </div>
       {% endif %}
       
       {% assign limit = section.settings.products_to_show | default: 8 %}
-      <div style="background: yellow; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-        DEBUG: Limit: {{ limit }}
-      </div>
       
-      {% if collection.products.size > 0 %}
-        {% for product in collection.products limit: limit %}
-          <div style="background: lightblue; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-            DEBUG: Rendering product {{ forloop.index }}: {{ product.title }}
+      {% for product in collection.products limit: limit %}
+        <div class="purelane-shop-item">
+          <div class="purelane-shop-image">
+            {% if product.featured_image %}
+              <a href="{{ product.url }}">
+                <img 
+                  src="{{ product.featured_image | image_url: width: 400 }}" 
+                  alt="{{ product.title | escape }}" 
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                >
+              </a>
+            {% else %}
+              <div class="purelane-shop-placeholder">No image</div>
+            {% endif %}
           </div>
-          <div style="background: lightblue; padding: 10px; margin-bottom: 10px; font-weight: bold;">
-            DEBUG: Has featured image: {{ product.featured_image }}
+          
+          <h3 class="purelane-shop-title">
+            <a href="{{ product.url }}">{{ product.title }}</a>
+          </h3>
+          
+          <div class="purelane-shop-price">
+            <strong>{{ product.price | money }}</strong>
+            {% if product.compare_at_price and product.compare_at_price > product.price %}
+              <s>{{ product.compare_at_price | money }}</s>
+            {% endif %}
           </div>
-          <div class="purelane-shop-item">
-            <div class="purelane-shop-image">
-              {% if product.featured_image %}
-                <a href="{{ product.url }}">
-                  <img 
-                    src="{{ product.featured_image | image_url: width: 400 }}" 
-                    alt="{{ product.title | escape }}" 
-                    loading="lazy"
-                    width="400"
-                    height="400"
-                  >
-                </a>
-              {% else %}
-                <div class="purelane-shop-placeholder">No image</div>
-              {% endif %}
-            </div>
-            
-            <h3 class="purelane-shop-title">
-              <a href="{{ product.url }}">{{ product.title }}</a>
-            </h3>
-            
-            <div class="purelane-shop-price">
-              <strong>{{ product.price | money }}</strong>
-              {% if product.compare_at_price and product.compare_at_price > product.price %}
-                <s>{{ product.compare_at_price | money }}</s>
-              {% endif %}
-            </div>
-            
-            <a href="{{ product.url }}" class="purelane-shop-button">
-              View Product
-            </a>
-          </div>
-        {% endfor %}
-      {% else %}
-        <div style="background: red; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 18px;">
-          NO PRODUCTS FOUND IN COLLECTION
+          
+          <a href="{{ product.url }}" class="purelane-shop-button">
+            View Product
+          </a>
         </div>
-      {% endif %}
+      {% endfor %}
     </div>
   </div>
 </section>
